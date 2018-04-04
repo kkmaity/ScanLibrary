@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+ 
+    <!-- Name Label -->
+ 
+    <!-- Input Name -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            tools:dropDownHeight="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+        </AutoCompleteTextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/labelNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:text="Note:" />
+
+        <EditText
+            android:id="@+id/inputExplicatii"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+    </LinearLayout>
+    <!-- Price Label -->
+ 
+    <!-- Input Price -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+       <TextView
+            android:id="@+id/labelAdresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"          
+            android:ems="5"
+            android:text="Cantitate:" />
+
+        <EditText
+            android:id="@+id/cant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="5"
+            android:inputType="number"
+            android:singleLine="true" />
+
+    </LinearLayout>
+ 
+    <!-- Description Label -->
+
+    <!-- Input description -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+       <TextView
+           android:id="@+id/labelTelefon"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:ems="10"
+           android:text="Data:" />
+
+        <EditText
+            android:id="@+id/data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:singleLine="true" >
+
+         
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/labelDataLivrat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:text="Data Livrat:" />
+
+        <EditText
+            android:id="@+id/datalivrat"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10" />
+
+    </LinearLayout>
+
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" >
+
+          <TextView
+              android:id="@+id/labelSolicitant"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:ems="10"
+              android:text="Solicitant:" />
+
+          <EditText
+              android:id="@+id/idsolicitant"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              
+              android:layout_weight="1"
+              android:ems="10"
+              android:focusable="false"
+              android:singleLine="true" />
+
+      </LinearLayout>
+ 
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!-- Button Create Product --><!-- Button Create Product -->
+
+        <TextView
+            android:id="@+id/labelAlocat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:text="Alocat:" />
+
+        <EditText
+            android:id="@+id/inputAlocat"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            
+            android:layout_weight="1"
+            android:ems="10"
+            android:focusable="false"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/idComandaHidden"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:layout_marginBottom="15dip"
+        android:layout_weight="1"
+        android:ems="10"
+        android:singleLine="true"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/idAlocatHidden"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="38dp"
+        android:ems="10"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/idClient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:visibility="gone" >
+
+        </EditText>
+
+        <Button
+            android:id="@+id/Map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true" 
+            android:text="Aloca" />
+
+        <Button
+            android:id="@+id/rezolvat"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"            
+            android:text="Realizat" />
+
+        <Button
+            android:id="@+id/salveazamodificari"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_toRightOf="@id/Map"
+            android:text="Salveaza" />
+
+    </RelativeLayout>
+ 
+</LinearLayout>
+
+</ScrollView>

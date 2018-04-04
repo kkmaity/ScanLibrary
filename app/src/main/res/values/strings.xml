@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">retrofit</string>
+    <string name="pdf_ext" translatable="false">.pdf</string>
+    <string name="pdf_dir" translatable="false">/PDFfiles/</string>
+    <string name="pdf_type" translatable="false">application/pdf</string>
+
+    <string name="please_wait">Please Wait</string>
+    <string name="populating_list">Fetching files. This may take a while</string>
+    <string name="toast_no_pdf_app">No PDF App</string>
+    <string name="open_file">Open File</string>
+
+</resources>
