@@ -2,7 +2,9 @@ package com.retrofitsample.restServices;
 
 import com.retrofitsample.model.GetUserMain;
 import com.retrofitsample.model.Items;
+import com.retrofitsample.model.ListApiResponse;
 import com.retrofitsample.model.Order;
+import com.retrofitsample.model.RatingDetails;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,4 +43,11 @@ public interface MInterface {
      Call<GetUserMain> getUserData(@Url String url);
     @GET
     Call<ResponseBody> getRegister(@Url String url);
+
+
+    @GET("comenzi/test/ratingnew.php")
+    Call<ArrayList<ListApiResponse>> getRatingList();
+
+    @GET
+    Call<ArrayList<RatingDetails>> getRatingDetails(@Url String url);
 }
