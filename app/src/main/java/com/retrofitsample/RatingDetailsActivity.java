@@ -239,13 +239,29 @@ public class RatingDetailsActivity extends BaseActivity {
                 document.open();
                 Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(),imgURI);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 70, stream);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 image = Image.getInstance(getRealPathFromUri(RatingDetailsActivity.this,imgURI));
-                if (bmp.getWidth() > documentRect.getWidth()
-                        || bmp.getHeight() > documentRect.getHeight()) {
-                    image.scaleAbsolute(documentRect.getWidth(), documentRect.getHeight());
+                float doc_width=documentRect.getWidth();
+                float doc_height=documentRect.getHeight();
+                float originalWidth = bmp.getWidth();
+                float originalHeight = bmp.getHeight();
+                float aspect_ratio = originalWidth /originalHeight ;
+                if (bmp.getWidth() > doc_width || bmp.getHeight() > doc_height) {
+                    if(originalWidth>originalHeight){
+                        image.scaleAbsolute(documentRect.getWidth(), doc_width/aspect_ratio);
+                    }else if(originalHeight>originalWidth){
+                        image.scaleAbsolute(doc_height*aspect_ratio,documentRect.getHeight());
+                    }else{
+                        image.scaleAbsolute(doc_height*aspect_ratio,documentRect.getHeight());
+                    }
                 } else {
-                    image.scaleAbsolute(bmp.getWidth(), bmp.getHeight());
+                    if(originalWidth>originalHeight){
+                        image.scaleAbsolute(originalWidth, originalWidth/aspect_ratio);
+                    }else if(originalHeight>originalWidth){
+                        image.scaleAbsolute(originalHeight*aspect_ratio,originalHeight);
+                    }else{
+                        image.scaleAbsolute(originalHeight*aspect_ratio,originalHeight);
+                    }
                 }
                 image.setAbsolutePosition(
                         (documentRect.getWidth() - image.getScaledWidth()) / 2,
