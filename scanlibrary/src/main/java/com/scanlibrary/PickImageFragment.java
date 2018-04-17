@@ -2,10 +2,14 @@ package com.scanlibrary;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +36,7 @@ public class PickImageFragment extends Fragment {
     private ImageButton galleryButton;
     private Uri fileUri;
     private IScanner scanner;
+    private int cameraPhotoRotation=0;
 
     @Override
     public void onAttach(Activity activity) {
@@ -160,7 +165,21 @@ public class PickImageFragment extends Fragment {
             try {
                 switch (requestCode) {
                     case ScanConstants.START_CAMERA_REQUEST_CODE:
+                        if (fileUri != null) {
+                            cameraPhotoRotation = getCameraPhotoOrientation(fileUri.toString());
+                        }
+
+                        if (cameraPhotoRotation == 0) {
+                            cameraPhotoRotation = getRotationFromMediaStore(getActivity(), fileUri);
+                        }
+
                         bitmap = getBitmap(fileUri);
+                        if (cameraPhotoRotation != 0) {
+                            Bitmap rotationCorrectedBitmap = rotateBitmap(cameraPhotoRotation, bitmap);
+                            bitmap.recycle();
+                            bitmap = rotationCorrectedBitmap;
+                        }
+
                         break;
 
                     case ScanConstants.PICKFILE_REQUEST_CODE:
@@ -194,5 +213,57 @@ public class PickImageFragment extends Fragment {
                 = BitmapFactory.decodeFileDescriptor(
                 fileDescriptor.getFileDescriptor(), null, options);
         return original;
+    }
+
+    public static int getCameraPhotoOrientation(String imageFilePath) {
+        int rotate = 0;
+        try {
+
+            ExifInterface exif;
+
+            exif = new ExifInterface(imageFilePath);
+            String exifOrientation = exif
+                    .getAttribute(ExifInterface.TAG_ORIENTATION);
+            Log.d("exifOrientation", exifOrientation);
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            Log.d("HOM", "orientation :" + orientation);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return rotate;
+    }
+
+    public static int getRotationFromMediaStore(Context context, Uri imageUri) {
+        String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION};
+        Cursor cursor = context.getContentResolver().query(imageUri, columns, null, null, null);
+        if (cursor == null) return 0;
+
+        cursor.moveToFirst();
+
+        int orientationColumnIndex = cursor.getColumnIndex(columns[0]);
+        return cursor.getInt(orientationColumnIndex);
+    }
+
+    public static Bitmap rotateBitmap(int rotation, Bitmap bmp) {
+        if (rotation != 0) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotation);
+            bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+        }
+        return bmp;
     }
 }
