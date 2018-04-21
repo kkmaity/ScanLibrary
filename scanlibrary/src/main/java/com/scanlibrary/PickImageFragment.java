@@ -2,6 +2,7 @@ package com.scanlibrary;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -35,6 +36,7 @@ public class PickImageFragment extends Fragment {
     private ImageButton cameraButton;
     private ImageButton galleryButton;
     private Uri fileUri;
+    private File file;
     private IScanner scanner;
     private int cameraPhotoRotation=0;
 
@@ -154,6 +156,8 @@ public class PickImageFragment extends Fragment {
         File file = new File(ScanConstants.IMAGE_PATH, "IMG_" + timeStamp +
                 ".jpg");
         fileUri = Uri.fromFile(file);
+        this.file=file;
+
         return file;
     }
 
@@ -166,7 +170,7 @@ public class PickImageFragment extends Fragment {
                 switch (requestCode) {
                     case ScanConstants.START_CAMERA_REQUEST_CODE:
                         if (fileUri != null) {
-                            cameraPhotoRotation = getCameraPhotoOrientation(fileUri.toString());
+                            cameraPhotoRotation = getCameraPhotoOrientation(fileUri.getPath());
                         }
 
                         if (cameraPhotoRotation == 0) {
@@ -247,15 +251,41 @@ public class PickImageFragment extends Fragment {
         return rotate;
     }
 
-    public static int getRotationFromMediaStore(Context context, Uri imageUri) {
+    public  int getRotationFromMediaStore(Context context, Uri imageUri) {
         String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION};
         Cursor cursor = context.getContentResolver().query(imageUri, columns, null, null, null);
-        if (cursor == null) return 0;
+        if (cursor == null) {
+            return 0;
+        }
 
         cursor.moveToFirst();
 
-        int orientationColumnIndex = cursor.getColumnIndex(columns[0]);
+        int orientationColumnIndex = cursor.getColumnIndex(columns[1]);
         return cursor.getInt(orientationColumnIndex);
+    }
+
+
+    public static Uri getImageContentUri(Context context, File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[] { MediaStore.Images.Media._ID },
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[] { filePath }, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            cursor.close();
+            return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
     }
 
     public static Bitmap rotateBitmap(int rotation, Bitmap bmp) {
