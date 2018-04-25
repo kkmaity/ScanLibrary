@@ -1,5 +1,6 @@
 package com.retrofitsample.restServices;
 
+import com.retrofitsample.model.Agent;
 import com.retrofitsample.model.GetUserMain;
 import com.retrofitsample.model.Items;
 import com.retrofitsample.model.ListApiResponse;
@@ -12,11 +13,13 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /**
@@ -48,6 +51,12 @@ public interface MInterface {
     @GET("comenzi/test/ratingnew.php")
     Call<ArrayList<ListApiResponse>> getRatingList();
 
+    @GET("comenzi/test/agenti.php")
+    Call<ArrayList<Agent>> getAgentList();
+
     @GET
     Call<ArrayList<RatingDetails>> getRatingDetails(@Url String url);
+
+    @GET("comenzi/test/ratingnewfiltered.php?")
+    Call<ArrayList<ListApiResponse>> getRatingFilteredList(@QueryMap Map<String, String> params);
 }

@@ -79,13 +79,11 @@ public class FiltruActivity extends AppCompatActivity {
         }
         });
     }
-// Register  DatePickerDialog listener
-        private DatePickerDialog.OnDateSetListener mDateSetListener =
-                new DatePickerDialog.OnDateSetListener() {
+       //Register  DatePickerDialog listener
+        private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener(){
                     // the callback received when the user "sets" the Date in the DatePickerDialog
                     @Override
-                    public void onDateSet(DatePicker view, int yearSelected,
-                                          int monthOfYear, int dayOfMonth) {
+                    public void onDateSet(DatePicker view, int yearSelected, int monthOfYear, int dayOfMonth) {
                         year = yearSelected;
                         month = monthOfYear + 1;
                         day = dayOfMonth;
@@ -100,13 +98,9 @@ public class FiltruActivity extends AppCompatActivity {
             switch (id) {
                 case DATE_DIALOG_ID:
                     // create a new DatePickerDialog with values you want to show
-                    return new DatePickerDialog(this,
-                            mDateSetListener,
-                            mYear, mMonth, mDay);
-
+                    return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
             }
             return null;
-
         }
     }
 
