@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +39,11 @@ import com.retrofitsample.model.RatingDetails;
 import com.retrofitsample.restServices.OnApiResponseListener;
 import com.scanlibrary.ScanActivity;
 import com.scanlibrary.ScanConstants;
+
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import static org.apache.commons.net.ftp.FTPCommand.PORT;
 
 
 public class RatingDetailsActivity extends BaseActivity {
@@ -281,6 +288,7 @@ public class RatingDetailsActivity extends BaseActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             openFile(path);
+            new UploadFile().execute();
         }
     }
     public void openFile(String name) {
@@ -310,6 +318,34 @@ public class RatingDetailsActivity extends BaseActivity {
                 cursor.close();
             }
         }
+    }
+
+
+    private class UploadFile extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            FTPClient client = new FTPClient();
+            try {
+                client.connect("82.79.184.253");
+                client.login("procese", "mircea823333");
+                client.setFileType(FTP.BINARY_FILE_TYPE, FTP.BINARY_FILE_TYPE);
+                return client.storeFile(System.currentTimeMillis()+".pdf", new FileInputStream(new File(path)));
+
+            } catch (Exception e) {
+                Log.d("FTP", e.toString());
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean sucess) {
+            if (sucess)
+                Toast.makeText(RatingDetailsActivity.this, "File Sent", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(RatingDetailsActivity.this, "Error", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 }

@@ -110,8 +110,11 @@ public class RatingListActivity extends BaseActivity implements DatePickerDialog
             public <E> void onSuccess(E t) {
                 hideLoading();
                 mlist = (List<ListApiResponse>) t;
-                if(mlist.size()>0)
+                if(mlist.size()>0) {
+                    txtNoItem.setVisibility(View.GONE);
+                    mRecycler.setVisibility(View.VISIBLE);
                     setAdapterRecyclerView(mlist);
+                }
                 else {
                     txtNoItem.setVisibility(View.VISIBLE);
                     mRecycler.setVisibility(View.GONE);
@@ -152,8 +155,11 @@ public class RatingListActivity extends BaseActivity implements DatePickerDialog
             public <E> void onSuccess(E t) {
                 hideLoading();
                 mlist = (List<ListApiResponse>) t;
-                if(mlist.size()>0)
-                  setAdapterRecyclerView(mlist);
+                if(mlist.size()>0) {
+                    txtNoItem.setVisibility(View.GONE);
+                    mRecycler.setVisibility(View.VISIBLE);
+                    setAdapterRecyclerView(mlist);
+                }
                 else {
                     txtNoItem.setVisibility(View.VISIBLE);
                     mRecycler.setVisibility(View.GONE);
@@ -201,7 +207,7 @@ public class RatingListActivity extends BaseActivity implements DatePickerDialog
     }
 
     private void showDialog(){
-        final Dialog dialog=new Dialog(this,android.R.style.Theme_NoTitleBar_Fullscreen);
+        final Dialog dialog=new Dialog(this);
         dialog.setContentView(R.layout.dialog_filter);
         txtEnd = (TextView)dialog.findViewById(R.id.tv_enddate);
         txtEnd.setOnClickListener(new View.OnClickListener() {
@@ -288,7 +294,19 @@ public class RatingListActivity extends BaseActivity implements DatePickerDialog
         year = yearSelected;
         month = monthOfYear + 1;
         day = dayOfMonth;
-        if(nr==1){txtEnd.setText(year + "-" + month + "-" + day);}
-        else{txtStart.setText(year + "-" + month + "-" + day);}
+        String fm=""+month;
+        String fd=""+day;
+        if(month<10){
+            fm ="0"+month;
+        }
+        if (day<10){
+            fd="0"+day;
+        }
+        if(nr==1){
+            txtEnd.setText(year + "-" + fm + "-" + fd);
+        }
+        else{
+            txtStart.setText(year + "-" + fm + "-" + fd);
+        }
     }
 }
